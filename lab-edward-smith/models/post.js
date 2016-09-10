@@ -8,4 +8,4 @@ const PostSchema = new Schema({
   userId: String
 });
 
-module.exports = exports = mongoose.model('Post', movieSchema);
+module.exports = exports = mongoose.model('Post', PostSchema);

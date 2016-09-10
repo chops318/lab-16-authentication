@@ -1,4 +1,5 @@
 'use strict';
+
 module.exports = exports = function(req, res, next) {
   try {
     let header = req.headers.authorization;
@@ -12,6 +13,6 @@ module.exports = exports = function(req, res, next) {
   } catch(e) {
     e.statusCode = 400;
     e.message = 'Invalid BasicHTTP Authentication';
-    next(e);
+    next(e)
   }
 };

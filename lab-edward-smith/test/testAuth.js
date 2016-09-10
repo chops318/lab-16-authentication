@@ -49,6 +49,51 @@ describe('Auth tests', function() {
         })
     })
 })
+
+describe('Auth', () => {
+  before(function(done) {
+    chai.request('localhost:3000')
+      .post('/api/signup')
+      .send({email: 'edsmith@whitehouse.com', password: 'testpass1234'})
+      .end(function(err, res) {
+        console.log(res.body.token)
+        done();
+      })
+  })
+
+  it('GET should return a 401', function(done){
+    chai.request('localhost:3000')
+      .get('/api/post')
+      .end(function(err, res) {
+        expect(res).to.have.status(401);
+        done();
+      })
+  })
+
+  it('POST should return a 401 status', function(done) {
+    chai.request('localhost:3000')
+      .post('/api/post')
+      .end(function(err, res) {
+        expect(res).to.have.status(401);
+        done();
+      })
+  });
+
+  it('should POST with token', function(done) {
+    chai.request('localhost:3000')
+      .post('/api/post')
+      .set('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGQiOiJlZHNtaXRoQHdoaXRlaG91c2UuY29tIiwiaWF0IjoxNDczNDkxMjExfQ.TKG-PCLLiqBT96m1E8w5axvzhzOsvN04zUbeoOZrvfk')
+      .send({
+        name: 'Edward',
+        body: 'Oi'
+      })
+      .end(function(err, res) {
+        expect(res).to.have.status(200);
+        done();
+      })
+  })
+})
+
 describe('router catch all', function() {
   after(function(done) {
     mongoose.connection.db.dropDatabase(function() {
